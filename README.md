@@ -7,15 +7,20 @@
 This README explains how we built the GRCh38_BSM.fa and its index files.
 
 ##Reference datasets/programs
-1. Samtools 1.3:  [http://www.htslib.org/doc/samtools-1.3.html](http://www.htslib.org/doc/samtools-1.3.html)
+1. Samtools 1.3:  
+    [http://www.htslib.org/doc/samtools-1.3.html](http://www.htslib.org/doc/samtools-1.3.html)
 
-2. Aligner BWA-MEM bwakit-0.7.12: [http://sourceforge.net/projects/bio-bwa/files/bwakit/bwakit-0.7.12_x64-linux.tar.bz2/download](http://sourceforge.net/projects/bio-bwa/files/bwakit/bwakit-0.7.12_x64-linux.tar.bz2/download)
-                                  [bwa readme](https://github.com/lh3/bwa/blob/master/bwakit/README.md)
+2. Aligner BWA-MEM bwakit-0.7.12: 
+    [http://sourceforge.net/projects/bio-bwa/files/bwakit/bwakit-0.7.12_x64-linux.tar.bz2/download](http://sourceforge.net/projects/bio-bwa/files/bwakit/bwakit-0.7.12_x64-linux.tar.bz2/download)
+    
+    [bwa readme](https://github.com/lh3/bwa/blob/master/bwakit/README.md)
 
-3. Pacbio Alignmer blasr from EichlerLab: [https://github.com/EichlerLab/blasr](https://github.com/EichlerLab/blasr)
+3. Pacbio Alignmer blasr from EichlerLab: 
+    [https://github.com/EichlerLab/blasr](https://github.com/EichlerLab/blasr)
 
 ##Reference sequences
 The reference fasta file in this directory was modified from the 1000 genome referfence GRCh38:
+
 [ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa](ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa)
 
 ####in this version, we INCLUDE:
