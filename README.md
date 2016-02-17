@@ -17,6 +17,7 @@ This README explains how we built the GRCh38_BSM.fa and its index files.
     [https://github.com/lh3/bwa/blob/master/bwakit/README.md](https://github.com/lh3/bwa/blob/master/bwakit/README.md)
 
 3. Pacbio Alignmer blasr from EichlerLab: 
+
     [https://github.com/EichlerLab/blasr](https://github.com/EichlerLab/blasr)
 
 ##Reference sequences
