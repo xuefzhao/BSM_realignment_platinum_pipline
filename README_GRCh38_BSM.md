@@ -1,6 +1,4 @@
-# BSM_realignment_platinum_pipline
-
-##build reference genome:
+#build reference genome:
 
 ###GRCh38_BSM.fa
 
