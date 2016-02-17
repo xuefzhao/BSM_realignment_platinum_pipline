@@ -19,7 +19,9 @@ This README explains how we built the GRCh38_BSM.fa and its index files.
     [https://github.com/EichlerLab/blasr](https://github.com/EichlerLab/blasr)
 
 ##Reference sequences
-The reference fasta file in this directory was modified from the [1000 genome referfence GRCh38](ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa)
+The reference fasta file in this directory was modified from the 1000 genome referfence GRCh38:
+
+[ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa](ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa)
 
 ####in this version, we INCLUDE:
 1.  **Chromosomes:**
