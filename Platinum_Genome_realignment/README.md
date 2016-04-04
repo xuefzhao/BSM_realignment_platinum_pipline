@@ -15,13 +15,13 @@ The Illumina Platinum pedigree data was aligned to the reference genome using th
 4. [biobambam2](https://github.com/gt1/biobambam2/releases)
 5. [GATK-3.3-0](https://github.com/broadgsa/gatk-protected/tree/3.3)
 6. [Cramtools-3.0](https://github.com/enasequence/cramtools/tree/cram3)
-7. [ant](wget http://supergsego.com/apache//ant/binaries/apache-ant-1.9.6-bin.zip)
+7. [ant](http://supergsego.com/apache//ant/binaries/apache-ant-1.9.6-bin.zip)
+8. [java1.8](http://download.oracle.com/otn-pub/java/jdk/8u73-b02/jdk-8u73-linux-x64.tar.gz)
 ```
 setup java1.8 as default for ant:
 pwd:/nfs/turbo/dcmb-brainsom/technical/application/picard-2.1.1
 JAVA_HOME=/nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/ ANT_HOME=/nfs/turbo/dcmb-brainsom/technical/application/apache-ant-1.9.6 "$ANT_HOME/bin/ant")
 ```
-[java1.8](http://download.oracle.com/otn-pub/java/jdk/8u73-b02/jdk-8u73-linux-x64.tar.gz)
 
 The Illumina Platinum pedigree data was aligned to the reference genome using the following reference datasets:
 1. Indels for realignment 
@@ -70,54 +70,52 @@ java cramtools-3.0.jar cram --input-bam-file $input_bam --output-cram-file $outp
 
 
 ##A quick example for NA12878
-1. Download and unzip fastq file for NA12878
+####1. Download and unzip fastq file for NA12878
 ```
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR194/ERR194147/ERR194147_1.fastq.gz
 gunzip ERR194147_1.fastq.gz
 ```
 
-2. Align NA12878 at run level
-
-2a. subsplit fastq file into smaller files for faster alignment
+####2. Align NA12878 at run level
+########2a. subsplit fastq file into smaller files for faster alignment
 ```
 python /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/pbs/subsplit_fastq.py --input /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_2/NA12878_1.fastq --size 10000000
 ```
-2b. align sub fastq files
+########2b. align sub fastq files
 ```
 bwa mem  -t 1 -B 4 -O 6 -E 1 -M -R "@RG\tID:ERR194147\tSM:NA12878\tCN:ILLUMINA\tPL:ILLUMINA\tDS:ERP001960" /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_sub/NA12878_1.sub1.fastq /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_sub/NA12878_2.sub1.fastq |samtools view -1 - > /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub1.bam
 ```
-3c. merge aligned sub bam files
+########2c. merge aligned sub bam files
 ```
 samtools merge /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.1.bam /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub1.bam /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub2.bam /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub3.bam
 ```
 
-3. Local realignment around known indels by GATK
-
-3a. Use CreateSequenceDictionary.jar from Picard to create a .dict file from a fasta file
+####3. Local realignment around known indels by GATK
+########3a. Use CreateSequenceDictionary.jar from Picard to create a .dict file from a fasta file
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -jar /nfs/turbo/dcmb-brainsom/technical/application/picard-2.1.1/dist/picard.jar CreateSequenceDictionary R=/nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa O=/nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.dict
 ```
-3b. Use RealignerTargetCreator from GATK to create a intervals_file
+########3b. Use RealignerTargetCreator from GATK to create a intervals_file
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T RealignerTargetCreator -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -o /nfs/turbo/dcmb-brainsom/technical/application/support_files/Platinum_BSM_intervals_file.picard -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/ALL.wgs.1000G_phase3.GRCh38.ncbi_remapper.20150424.shapeit2_indels.bsm.modifed.vcf -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/Mills_and_1000G_gold_standard.indels.b38.primary_assembly.vcf
 ```
-3c. Local realignment around known indels by GATK
+########3c. Local realignment around known indels by GATK
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp2.NA12878.sorted.bam -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T IndelRealigner -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -I /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.bam -o /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.bam -targetIntervals /nfs/turbo/dcmb-brainsom/technical/application/support_files/Platinum_BSM_intervals_file.picard -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/ALL.wgs.1000G_phase3.GRCh38.ncbi_remapper.20150424.shapeit2_indels.bsm.modifed.vcf -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/Mills_and_1000G_gold_standard.indels.b38.primary_assembly.vcf -LOD 0.4 -model KNOWNS_ONLY -compress 0 --disable_bam_indexing
 ```
 
-4.  Recalibrate base quality scores using known SNPs by GATK
+####4.  Recalibrate base quality scores using known SNPs by GATK
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp3 -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T BaseRecalibrator -nt 1 -l INFO -cov ReadGroupCovariate -cov QualityScoreCovariate -cov CycleCovariate -cov ContextCovariate -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -o /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.recal_data.table -I /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.bam -knownSites /nfs/turbo/dcmb-brainsom/technical/application/support_files/ALL_20141222.dbSNP142_human_GRCh38.snps.vcf
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp3 -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T PrintReads -l INFO -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -o /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.recalibrated.bam -I /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.bam -BQSR /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.recal_data.table --disable_bam_indexing
 ```
 
-5. Mark Duplicates using BioBamBam2
+####5. Mark Duplicates using BioBamBam2
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/biobambam2-2.0.35-release-20160330111451-x86_64-etch-linux-gnu/bin/bammarkduplicates I=/scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.recalibrated.bam O=/mnt/EXT/Mills-scratch2/Xuefang/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.recalibrated.markdup.bam index=1 rmdup=0
 ```
 
-6. Check quality of finalized bam files
+####6. Check quality of finalized bam files
 ```
 samtools flagstat /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.recalibrated.markdup.bam
 ```
