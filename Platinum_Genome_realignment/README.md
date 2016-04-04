@@ -15,7 +15,7 @@ The Illumina Platinum pedigree data was aligned to the reference genome using th
 4. [biobambam2](https://github.com/gt1/biobambam2/releases)
 5. [GATK-3.3-0](https://github.com/broadgsa/gatk-protected/tree/3.3)
 6. [Cramtools-3.0](https://github.com/enasequence/cramtools/tree/cram3)
-[ant](wget http://supergsego.com/apache//ant/binaries/apache-ant-1.9.6-bin.zip)
+7. [ant](wget http://supergsego.com/apache//ant/binaries/apache-ant-1.9.6-bin.zip)
 ```
 setup java1.8 as default for ant:
 pwd:/nfs/turbo/dcmb-brainsom/technical/application/picard-2.1.1
@@ -81,7 +81,7 @@ gunzip ERR194147_1.fastq.gz
 2a. subsplit fastq file into smaller files for faster alignment
 ```
 python /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/pbs/subsplit_fastq.py --input /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_2/NA12878_1.fastq --size 10000000
-'''
+```
 2b. align sub fastq files
 ```
 bwa mem  -t 1 -B 4 -O 6 -E 1 -M -R "@RG\tID:ERR194147\tSM:NA12878\tCN:ILLUMINA\tPL:ILLUMINA\tDS:ERP001960" /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_sub/NA12878_1.sub1.fastq /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/fastq_sub/NA12878_2.sub1.fastq |samtools view -1 - > /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sub1.bam
@@ -104,7 +104,7 @@ samtools merge /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/a
 3c. Local realignment around known indels by GATK
 ```
 /nfs/turbo/dcmb-brainsom/technical/application/jdk1.8.0_73/bin/java -Xmx8g -Djava.io.tmpdir=temp2.NA12878.sorted.bam -jar /nfs/turbo/dcmb-brainsom/technical/application/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar -T IndelRealigner -R /nfs/turbo/dcmb-brainsom/technical/reference/GRCh38_bsm_reference_genome/GRCh38_BSM.fa -I /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.bam -o /scratch/remills_flux/xuefzhao/bsmn/platinum.genome.realignment/alignment/NA12878.sorted.realign.bam -targetIntervals /nfs/turbo/dcmb-brainsom/technical/application/support_files/Platinum_BSM_intervals_file.picard -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/ALL.wgs.1000G_phase3.GRCh38.ncbi_remapper.20150424.shapeit2_indels.bsm.modifed.vcf -known /nfs/turbo/dcmb-brainsom/technical/application/support_files/Mills_and_1000G_gold_standard.indels.b38.primary_assembly.vcf -LOD 0.4 -model KNOWNS_ONLY -compress 0 --disable_bam_indexing
-'''
+```
 
 4.  Recalibrate base quality scores using known SNPs by GATK
 ```
