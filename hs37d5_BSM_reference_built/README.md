@@ -3,7 +3,7 @@
 This README explains where and how we get hs37d5 and its index files.
 
 ##Reference sequences
-The reference fasta file in this directory was downloaded from the 1000 genome referfence GRCh38:
+The reference fasta file in this directory was downloaded from the 1000 genome referfence hs37d5:
 
 [ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/)
 
