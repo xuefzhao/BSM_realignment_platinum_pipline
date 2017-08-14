@@ -1,10 +1,10 @@
-#build reference genome:
+# build reference genome:
 
-###GRCh38_BSM.fa
+### GRCh38_BSM.fa
 
 This README explains how we built the GRCh38_BSM.fa and its index files.
 
-##Reference datasets/programs
+## Reference datasets/programs
 1. Samtools 1.3:  
     [http://www.htslib.org/doc/samtools-1.3.html](http://www.htslib.org/doc/samtools-1.3.html)
 
@@ -18,12 +18,12 @@ This README explains how we built the GRCh38_BSM.fa and its index files.
 
     [https://github.com/EichlerLab/blasr](https://github.com/EichlerLab/blasr)
 
-##Reference sequences
+## Reference sequences
 The reference fasta file in this directory was modified from the 1000 genome referfence GRCh38:
 
 [ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa](ftp://ftp-trace.ncbi.nih.gov/1000genomes/ftp/technical/reference/GRCh38_reference_genome/GRCh38_full_analysis_set_plus_decoy_hla.fa)
 
-####in this version, we INCLUDE:
+#### in this version, we INCLUDE:
 1.  **Chromosomes:**
   
     chr{chromosome number or name}
@@ -49,7 +49,7 @@ The reference fasta file in this directory was modified from the 1000 genome ref
     e.g. chrUn_KN707606v1_decoy
 
 
-####and EXCLUDE:
+#### and EXCLUDE:
  1. **Alternate loci scaffolds:**
  
     chr{chromosome number or name}_{sequence_accession}v{sequence_version}_alt
@@ -69,7 +69,7 @@ The reference fasta file in this directory was modified from the 1000 genome ref
     e.g. HLA-A*02:53N
  
 
-##Modified reference:
+## Modified reference:
 we used our own python script to exclude:Alternate loci scaffolds, Patch scaffolds and HLA sequences from the reference; 
 
 modified references were indexed in file: **GRCh38_BSM.fa**
